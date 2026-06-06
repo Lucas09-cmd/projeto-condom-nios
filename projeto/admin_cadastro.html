@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Admin — Cadastro</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial, Helvetica, sans-serif;
+    }
+
+    body{
+      background:#f5f5f5;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      min-height:100vh;
+    }
+
+    .fundo{
+      width:100%;
+      max-width:420px;
+      background:#fff;
+      padding:30px;
+      border-radius:14px;
+      box-shadow:0 4px 20px rgba(0,0,0,.1);
+      text-align:center;
+    }
+
+    .fundo img{
+      width:80px;
+      margin-bottom:15px;
+    }
+
+    .badge-admin{
+      display:inline-block;
+      font-size:10px;
+      font-weight:700;
+      letter-spacing:.1em;
+      text-transform:uppercase;
+      background:#fef3c7;
+      color:#92400e;
+      padding:4px 10px;
+      border-radius:20px;
+      margin-bottom:12px;
+    }
+
+    h2{
+      margin-bottom:6px;
+    }
+
+    .sub{
+      font-size:13px;
+      color:#777;
+      margin-bottom:20px;
+    }
+
+    form{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    input{
+      width:100%;
+      padding:12px;
+      border:1px solid #ccc;
+      border-radius:8px;
+      outline:none;
+      font-size:14px;
+    }
+
+    input:focus{
+      border-color:#111;
+    }
+
+    button{
+      border:none;
+      border-radius:8px;
+      padding:12px;
+      background:#111;
+      color:#fff;
+      font-weight:600;
+      cursor:pointer;
+      transition:.2s;
+    }
+
+    button:hover{
+      opacity:.9;
+    }
+
+    button:disabled{
+      opacity:.7;
+      cursor:not-allowed;
+    }
+
+    #mensagem{
+      min-height:20px;
+      margin-top:14px;
+      font-size:13px;
+      font-weight:500;
+    }
+
+    .ok{
+      color:#065f46;
+    }
+
+    .err{
+      color:#991b1b;
+    }
+
+    .link-row{
+      margin-top:18px;
+    }
+
+    .link-row a{
+      text-decoration:none;
+      color:#111;
+      font-size:13px;
+      font-weight:600;
+    }
+
+    .link-row a:hover{
+      text-decoration:underline;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="fundo">
+
+  <img
+    src="1487716857-user_81635.webp"
+    alt="Logo"
+  >
+
+  <span class="badge-admin">
+    Administrador
+  </span>
+
+  <h2>Cadastro de Admin</h2>
+
+  <p class="sub">
+    Crie uma nova conta administrativa
+  </p>
+
+  <form id="formCadastro">
+
+    <input
+      type="text"
+      id="nome"
+      placeholder="Nome completo"
+      required
+    >
+
+    <input
+      type="email"
+      id="login"
+      placeholder="E-mail"
+      required
+    >
+
+    <input
+      type="password"
+      id="senha"
+      placeholder="Senha (mínimo 8 caracteres)"
+      required
+    >
+
+    <input
+      type="password"
+      id="senha_confirm"
+      placeholder="Confirmar senha"
+      required
+    >
+
+    <button
+      type="submit"
+      id="btnCadastrar"
+    >
+      Criar conta de admin
+    </button>
+
+  </form>
+
+  <p id="mensagem"></p>
+
+  <div class="link-row">
+    <a href="admin.html">
+      ← Voltar ao painel
+    </a>
+  </div>
+
+</div>
+
+<script>
+
+// =====================================
+// VERIFICA ADMIN LOGADO
+// =====================================
+
+window.addEventListener(
+'load',
+function(){
+
+const adminSalvo =
+localStorage.getItem(
+'admin'
+);
+
+console.log(
+'ADMIN NO STORAGE:',
+adminSalvo
+);
+
+if(!adminSalvo){
+
+alert(
+'Faça login como administrador.'
+);
+
+location.href =
+'admin_login.html';
+
+return;
+}
+
+try{
+
+const admin =
+JSON.parse(
+adminSalvo
+);
+
+console.log(
+'ADMIN LOGADO:',
+admin
+);
+
+}catch(error){
+
+console.error(
+'ERRO STORAGE:',
+error
+);
+
+localStorage.removeItem(
+'admin'
+);
+
+location.href =
+'admin_login.html';
+}
+});
+
+// =====================================
+// ELEMENTOS
+// =====================================
+
+const form =
+document.getElementById(
+'formCadastro'
+);
+
+const btn =
+document.getElementById(
+'btnCadastrar'
+);
+
+const msg =
+document.getElementById(
+'mensagem'
+);
+
+// =====================================
+// SUBMIT
+// =====================================
+
+form.addEventListener(
+'submit',
+async function(e){
+
+e.preventDefault();
+
+msg.className='';
+msg.textContent='';
+
+const nome =
+document
+.getElementById(
+'nome'
+)
+.value.trim();
+
+const login =
+document
+.getElementById(
+'login'
+)
+.value.trim();
+
+const senha =
+document
+.getElementById(
+'senha'
+)
+.value;
+
+const confirmar =
+document
+.getElementById(
+'senha_confirm'
+)
+.value;
+
+// validações
+if(!nome){
+
+msg.className='err';
+
+msg.textContent =
+'Informe o nome completo.';
+
+return;
+}
+
+if(senha.length < 8){
+
+msg.className='err';
+
+msg.textContent =
+'A senha deve ter no mínimo 8 caracteres.';
+
+return;
+}
+
+if(senha !== confirmar){
+
+msg.className='err';
+
+msg.textContent =
+'As senhas não coincidem.';
+
+return;
+}
+
+btn.disabled = true;
+
+btn.textContent =
+'Cadastrando...';
+
+try{
+
+const resposta =
+await fetch(
+'admin_cadastro.php',
+{
+method:'POST',
+
+headers:{
+'Content-Type':
+'application/json'
+},
+
+body: JSON.stringify({
+nome,
+login,
+senha
+})
+}
+);
+
+// DEBUG
+console.log(
+'STATUS:',
+resposta.status
+);
+
+// pega resposta texto
+const texto =
+await resposta.text();
+
+console.log(
+'RESPOSTA BRUTA:',
+texto
+);
+
+// converte JSON
+const dados =
+JSON.parse(texto);
+
+console.log(
+'JSON:',
+dados
+);
+
+// sucesso
+if(dados.sucesso){
+
+msg.className='ok';
+
+msg.textContent =
+'Administrador cadastrado com sucesso!';
+
+form.reset();
+
+}else{
+
+msg.className='err';
+
+msg.textContent =
+dados.mensagem
+||
+'Erro ao cadastrar.';
+}
+
+}catch(error){
+
+console.error(
+'ERRO FETCH:',
+error
+);
+
+msg.className='err';
+
+msg.textContent =
+'Erro ao conectar ao servidor.';
+}
+
+finally{
+
+btn.disabled = false;
+
+btn.textContent =
+'Criar conta de admin';
+}
+});
+
+</script>
+
+</body>
+</html>
+

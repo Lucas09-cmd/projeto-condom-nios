@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <link
+    rel="stylesheet"
+    href="global.css"
+  />
+
+  <link
+    rel="stylesheet"
+    href="style2.css"
+  />
+
+  <title>Home</title>
+
+  <style>
+
+    .home-grid{
+      display:grid;
+      grid-template-columns:
+      repeat(
+        auto-fit,
+        minmax(260px,1fr)
+      );
+      gap:22px;
+      margin-top:30px;
+    }
+
+    .dashboard-card{
+      background:white;
+      border-radius:24px;
+      padding:28px;
+
+      box-shadow:
+      0 10px 30px
+      rgba(15,23,42,.08);
+
+      transition:.2s;
+    }
+
+    .dashboard-card:hover{
+      transform:translateY(-4px);
+    }
+
+    .card-title{
+      color:#64748b;
+      font-size:14px;
+      margin-bottom:12px;
+    }
+
+    .card-value{
+      font-size:32px;
+      font-weight:700;
+      color:#0f172a;
+    }
+
+    .welcome-card{
+      background:
+      linear-gradient(
+        135deg,
+        #2563eb,
+        #1d4ed8
+      );
+
+      border-radius:28px;
+      padding:35px;
+      color:white;
+      margin-top:20px;
+
+      box-shadow:
+      0 20px 40px
+      rgba(37,99,235,.18);
+    }
+
+    .welcome-card h2{
+      font-size:34px;
+      margin-bottom:10px;
+    }
+
+    .welcome-card p{
+      font-size:16px;
+      opacity:.92;
+    }
+
+    .quick-actions{
+      margin-top:30px;
+      display:flex;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+
+    .action-btn{
+      background:white;
+      color:#2563eb;
+      border:none;
+      border-radius:16px;
+      padding:14px 24px;
+      font-weight:600;
+      cursor:pointer;
+      transition:.2s;
+    }
+
+    .action-btn:hover{
+      transform:translateY(-2px);
+    }
+
+    .user-profile{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+
+    .user-profile img{
+      width:52px;
+      height:52px;
+      border-radius:50%;
+      object-fit:cover;
+    }
+
+    .user-info{
+      display:flex;
+      flex-direction:column;
+    }
+
+    .user-name{
+      color:rgb(11, 11, 11);
+      font-size:15px;
+      font-weight:600;
+    }
+
+    .user-role{
+      color:#94a3b8;
+      font-size:12px;
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <!-- SIDEBAR -->
+  <div class="card" id="page">
+
+    <!-- PERFIL -->
+    <nav>
+      <ul>
+        <li>
+          <a 
+            href="user.html"
+            class="user-profile"
+            style="color:black"
+          >
+
+            <img 
+              src="1487716857-user_81635.webp"
+              alt="Usuário"
+            >
+
+            <div class="user-info">
+
+              <span
+                class="user-name"
+                id="nomeUsario"
+              >
+                —
+              </span>
+
+              <span class="user-role">
+                Usuário
+              </span>
+
+            </div>
+
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <p class="sidebar-section-label">
+      Menu
+    </p>
+
+    <nav>
+      <ul>
+
+        <li>
+          <a
+            href="home.html"
+            class="active"
+          >
+            Home
+          </a>
+        </li>
+
+        <li>
+          <a href="solicitacoes.html">
+            Solicitações
+          </a>
+        </li>
+
+
+        <li>
+          <a href="configuracoes.html">
+            Configurações
+          </a>
+        </li>
+
+      </ul>
+    </nav>
+
+    <button
+      type="button"
+      onclick="logout()"
+      class="logout-btn"
+      style="margin-top:auto;"
+    >
+      Sair
+    </button>
+
+  </div>
+
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <div class="main-header">
+
+      <h1>
+        Dashboard
+      </h1>
+
+      <p id="nomeUsuario">
+        Bem-vindo!
+      </p>
+
+    </div>
+
+
+    <!-- CARD BOAS VINDAS -->
+    <div class="welcome-card">
+
+      <h2>
+        Bem-vindo ao Sistema
+      </h2>
+
+      <p id="textoBoasVindas">
+        Gerencie suas solicitações de forma rápida e segura.
+      </p>
+
+      <div class="quick-actions">
+
+        <button
+          class="action-btn"
+          onclick="
+          location.href=
+          'solicitacoes.html'
+          "
+        >
+          Ver Solicitações
+        </button>
+
+        <button
+          class="action-btn"
+          onclick="
+          location.href=
+          'user.html'
+          "
+        >
+          Meu Perfil
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- CARDS -->
+    <div class="home-grid">
+
+      <div class="dashboard-card">
+
+        <div class="card-title">
+          Conta
+        </div>
+
+        <div class="card-value">
+          Ativa
+        </div>
+
+      </div>
+
+
+      <div class="dashboard-card">
+
+        <div class="card-title">
+          Tipo de Conta
+        </div>
+
+        <div class="card-value">
+          Usuário
+        </div>
+
+      </div>
+
+
+      <div class="dashboard-card">
+
+        <div class="card-title">
+          ID do Usuário
+        </div>
+
+        <div
+          class="card-value"
+          id="userId"
+        >
+          —
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+<script>
+
+const usuario =
+JSON.parse(
+  localStorage.getItem(
+    'usuario'
+  )
+  || 'null'
+);
+
+
+// ====================
+// LOGIN
+// ====================
+
+if (!usuario) {
+
+  location.href =
+  'login.html';
+
+} else {
+
+  document
+  .getElementById(
+    'nomeUsuario'
+  )
+  .textContent =
+  'Bem-vindo, ' +
+  (
+    usuario.nome
+    || ''
+  );
+
+  document
+  .getElementById(
+    'nomeUsario'
+  )
+  .textContent =
+  usuario.nome
+  || 'Usuário';
+
+  document
+  .getElementById(
+    'userId'
+  )
+  .textContent =
+  usuario.id
+  || '—';
+
+  document
+  .getElementById(
+    'textoBoasVindas'
+  )
+  .textContent =
+  `Olá ${usuario.nome},
+  acompanhe suas
+  solicitações e
+  gerencie sua conta
+  de forma simples.`;
+}
+
+
+// ====================
+// LOGOUT
+// ====================
+
+function logout(){
+
+  localStorage.removeItem(
+    'usuario'
+  );
+
+  location.href =
+  'login.html';
+}
+
+</script>
+
+</body>
+</html>

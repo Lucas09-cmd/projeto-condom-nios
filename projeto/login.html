@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="stylelogin.css" />
+  <title>Login — Sistema</title>
+</head>
+<body>
+    <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial, Helvetica, sans-serif;
+    }
+
+    body{
+      background:#f5f5f5;
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+
+    .fundo{
+      width:100%;
+      max-width:400px;
+      background:#fff;
+      padding:30px;
+      border-radius:14px;
+      box-shadow:0 4px 20px rgba(0,0,0,.1);
+      text-align:center;
+    }
+
+    .fundo img{
+      width:80px;
+      margin-bottom:15px;
+    }
+
+    .badge-admin{
+      display:inline-block;
+      font-size:10px;
+      font-weight:700;
+      letter-spacing:.1em;
+      text-transform:uppercase;
+      background:#fef3c7;
+      color:#92400e;
+      padding:4px 10px;
+      border-radius:20px;
+      margin-bottom:12px;
+    }
+
+    h2{
+      margin-bottom:6px;
+    }
+
+    .sub{
+      color:#777;
+      font-size:13px;
+      margin-bottom:20px;
+    }
+
+    form{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    input{
+      width:100%;
+      padding:12px;
+      border:1px solid #ccc;
+      border-radius:8px;
+      outline:none;
+      font-size:14px;
+    }
+
+    input:focus{
+      border-color:#111;
+    }
+
+    button{
+      border:none;
+      border-radius:8px;
+      padding:12px;
+      background:#111;
+      color:#fff;
+      cursor:pointer;
+      font-weight:600;
+      transition:.2s;
+    }
+
+    button:hover{
+      opacity:.9;
+    }
+
+    button:disabled{
+      opacity:.7;
+      cursor:not-allowed;
+    }
+
+    #mensagemErro{
+      color:#991b1b;
+      margin-top:14px;
+      font-size:13px;
+      min-height:18px;
+    }
+
+    .link-row{
+      margin-top:16px;
+      font-size:13px;
+    }
+
+    .link-row a{
+      color:#111;
+      text-decoration:none;
+      font-weight:600;
+    }
+
+    .link-row a:hover{
+      text-decoration:underline;
+    }
+  </style>
+  <div class="fundo">
+    <img src="1487716857-user_81635.webp" alt="logo" />
+    <h2>Bem-vindo</h2>
+    <p class="sub">Entre com seu e-mail e senha</p>
+
+    <form id="formLogin">
+      <input type="email"    id="login" placeholder="E-mail"  required autocomplete="email" />
+      <input type="password" id="senha" placeholder="Senha"   required autocomplete="current-password" />
+      <button type="submit" id="btnEntrar">Entrar</button>
+    </form>
+
+    <p id="mensagemErro" style="font-size:13px; color:#991b1b; margin-top:12px; text-align:center; min-height:18px;"></p>
+
+    <div class="link-row">
+      <a href="index.html">Criar conta</a>
+    </div>
+    <div class="link-row">
+      <a href="admin_login.html">Área admin</a>
+    </div>
+  </div>
+
+  <script>
+    // Se já está logado, redireciona direto
+    if (localStorage.getItem('usuario')) location.href = 'home.html';
+    if (localStorage.getItem('admin'))   location.href = 'admin.html';
+
+    const btn = document.getElementById('btnEntrar');
+
+    document.getElementById('formLogin').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const erro = document.getElementById('mensagemErro');
+      erro.textContent = '';
+      btn.disabled = true;
+      btn.textContent = 'Entrando…';
+
+      try {
+        const res   = await fetch('login.php', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({
+            login: document.getElementById('login').value.trim(),
+            senha: document.getElementById('senha').value,
+          }),
+        });
+        const dados = await res.json();
+
+        if (dados.sucesso) {
+          if (dados.tipo === 'admin') {
+            localStorage.setItem('admin', JSON.stringify(dados.admin));
+            location.href = 'admin.html';
+          } else {
+            localStorage.setItem('usuario', JSON.stringify(dados.usuario));
+            location.href = 'home.html';
+          }
+        } else {
+          erro.textContent = dados.mensagem;
+        }
+      } catch {
+        erro.textContent = 'Erro ao conectar com o servidor.';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Entrar';
+      }
+    });
+  </script>
+</body>
+</html>

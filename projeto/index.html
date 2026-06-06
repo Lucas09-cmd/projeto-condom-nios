@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro — Sistema Login</title>
+</head>
+<body>
+      <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial, Helvetica, sans-serif;
+    }
+
+    body{
+      background:#f5f5f5;
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+
+    .fundo{
+      width:100%;
+      max-width:400px;
+      background:#fff;
+      padding:30px;
+      border-radius:14px;
+      box-shadow:0 4px 20px rgba(0,0,0,.1);
+      text-align:center;
+    }
+
+    .fundo img{
+      width:80px;
+      margin-bottom:15px;
+    }
+
+    .badge-admin{
+      display:inline-block;
+      font-size:10px;
+      font-weight:700;
+      letter-spacing:.1em;
+      text-transform:uppercase;
+      background:#fef3c7;
+      color:#92400e;
+      padding:4px 10px;
+      border-radius:20px;
+      margin-bottom:12px;
+    }
+
+    h2{
+      margin-bottom:6px;
+    }
+
+    .sub{
+      color:#777;
+      font-size:13px;
+      margin-bottom:20px;
+    }
+
+    form{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    input{
+      width:100%;
+      padding:12px;
+      border:1px solid #ccc;
+      border-radius:8px;
+      outline:none;
+    }
+
+    input:focus{
+      border-color:#111;
+    }
+
+    button{
+      border:none;
+      border-radius:8px;
+      padding:12px;
+      background:#111;
+      color:#fff;
+      cursor:pointer;
+      font-weight:600;
+      transition:.2s;
+    }
+
+    button:hover{
+      opacity:.9;
+    }
+
+    button:disabled{
+      opacity:.7;
+      cursor:not-allowed;
+    }
+
+    #mensagemErro{
+      color:#991b1b;
+      margin-top:14px;
+      font-size:13px;
+      min-height:18px;
+    }
+
+    .link-row{
+      margin-top:16px;
+      font-size:13px;
+    }
+
+    .link-row a{
+      color:#111;
+      text-decoration:none;
+      font-weight:600;
+    }
+
+    .link-row a:hover{
+      text-decoration:underline;
+    }
+  </style>
+    <div class="fundo" id="cadastroArea">
+        <img src="1487716857-user_81635.webp" alt="logo">
+        <h2>Cadastro</h2>
+
+        <form id="formCadastro">
+            <div>
+                <input placeholder="Digite seu nome" type="text" id="nome" required autocomplete="name">
+            </div>
+            <br>
+            <div>
+                <input placeholder="Digite seu e-mail" type="email" id="login" required autocomplete="email">
+            </div>
+            <br>
+            <div>
+                <input placeholder="Digite sua senha (mín. 8 caracteres)" type="password" id="senha" required autocomplete="new-password">
+            </div>
+            <br>
+            <div>
+                <input placeholder="Confirme sua senha" type="password" id="senha_confirm" required autocomplete="new-password">
+            </div>
+            <br>
+            <button type="submit" id="btnCadastrar">Cadastrar</button>
+        </form>
+
+        <p id="mensagemCadastro" style="font-size:13px; margin-top:10px; text-align:center; min-height:18px;"></p>
+<div class="link-row">
+        <a href="login.html">Já tem conta? Fazer login</a>
+</div>
+    </div>
+
+    <script>
+        // Se já está logado, redireciona
+        if (localStorage.getItem('usuario')) location.href = 'home.html';
+        if (localStorage.getItem('admin'))   location.href = 'admin.html';
+
+        const formCadastro = document.getElementById('formCadastro');
+        const btn          = document.getElementById('btnCadastrar');
+
+        formCadastro.addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const nome         = document.getElementById('nome').value.trim();
+            const login        = document.getElementById('login').value.trim();
+            const senha        = document.getElementById('senha').value;
+            const senhaConfirm = document.getElementById('senha_confirm').value;
+            const mensagem     = document.getElementById('mensagemCadastro');
+
+            mensagem.style.color = '#991b1b';
+            mensagem.textContent = '';
+
+            if (!nome) {
+                mensagem.textContent = 'Informe seu nome.';
+                return;
+            }
+
+            if (senha.length < 8) {
+                mensagem.textContent = 'A senha deve ter pelo menos 8 caracteres.';
+                return;
+            }
+
+            if (senha !== senhaConfirm) {
+                mensagem.textContent = 'As senhas não coincidem.';
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = 'Cadastrando…';
+
+            try {
+                const resposta = await fetch('cadastro.php', {
+                    method:  'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body:    JSON.stringify({ nome, login, senha })
+                });
+
+                const dados = await resposta.json();
+
+                if (dados.sucesso) {
+                    mensagem.style.color = '#065f46';
+                    mensagem.textContent = 'Usuário cadastrado com sucesso! Redirecionando…';
+                    formCadastro.reset();
+                    setTimeout(() => location.href = 'login.html', 1500);
+                } else {
+                    mensagem.style.color = '#991b1b';
+                    mensagem.textContent = dados.mensagem;
+                }
+            } catch {
+                mensagem.style.color = '#991b1b';
+                mensagem.textContent = 'Erro ao conectar com o servidor.';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Cadastrar';
+            }
+        });
+    </script>
+</body>
+</html>

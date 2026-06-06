@@ -1,0 +1,80 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f4f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* ── Card principal ─────────────────────────────────────── */
+
+.fundo {
+  width: 380px;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #e0ddd8;
+  padding: 32px 28px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ── Imagem / avatar ────────────────────────────────────── */
+
+img {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 16px;
+}
+
+/* ── Campos de input ────────────────────────────────────── */
+
+input {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 14px;
+  color: #111;
+  background: #faf9f7;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+input:focus {
+  border-color: #111;
+}
+
+input::placeholder {
+  color: #bbb;
+}
+
+/* ── Botão ──────────────────────────────────────────────── */
+
+button {
+  width: 100%;
+  padding: 11px;
+  margin-top: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  color: #fff;
+  background: #111;
+  border: none;
+  border-radius: 8px;
+  transition: background 0.15s;
+}
+
+button:hover {
+  background: #333;
+}

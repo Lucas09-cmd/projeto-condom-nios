@@ -1,0 +1,1 @@
+este é um protótipo de um projeto de tcc, onde o principal foco são o envio das solicitações de ocorrências e denuncias pelos condomínos quanto a problemas com a infraestrutura do local quanto a problemas com a convivencia em si, o maior foco é a comunicação entre a administração e os moradores dos condomínios
